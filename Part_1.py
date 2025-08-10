@@ -21,12 +21,29 @@ def new_cards():
         stealth = easygui.integerbox("Enter cards stealth (1-25)")
         cunning = easygui.integerbox("Enter cards cunning (1-25)")
         print(ID,name,strength,speed,stealth,cunning)
+        Monster_cards[ID] = {
+            "name": name,
+            "strength": strength,
+            "speed": speed,
+            "stealth": stealth,
+            "cunning": cunning,
+        }
+        print(Monster_cards)
     
-
-ask = easygui.ynbox ("would you like to create any new monster cards?")
-if ask == True:
-        new_cards()
-search = easygui.ynbox("would you like to search for a monster card?")
-if search == True:
+while True:
+    ask = easygui.ynbox ("would you like to create any new monster cards?")
+    if ask == True:
+            new_cards()
+    else:
+        break
+search = easygui.buttonbox("would you like to search for a monster card or create new card?", choices= ("close", "search"))
+if search == "search":
         choice = easygui.choicebox("Select a card you wish to edit", choices= list (Monster_cards.keys()))
-        print(choice)
+        if choice:
+            card = Monster_cards[choice]
+            info = f"Name: {card['name']}\nStrength: {card['strength']}\nSpeed: {card['speed']}\nStealth: {card['stealth']}\nCunning: {card['cunning']}"
+            easygui.msgbox(info, title=f"Details for {choice}")
+elif search == "close":
+      ()
+
+
