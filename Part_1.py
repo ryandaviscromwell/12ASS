@@ -16,10 +16,10 @@ Monster_cards = {
 def new_cards():
         ID = easygui.enterbox("Enter cards ID")
         name = easygui.enterbox("Enter cards name")
-        strength = easygui.integerbox("Enter cards strength value (1-25)")
-        speed = easygui.integerbox("Enter cards speed (1-25)")
-        stealth = easygui.integerbox("Enter cards stealth (1-25)")
-        cunning = easygui.integerbox("Enter cards cunning (1-25)")
+        strength = easygui.integerbox("Enter cards strength value (1-25)", lowerbound=1, upperbound=25)
+        speed = easygui.integerbox("Enter cards speed (1-25)", lowerbound=1, upperbound=25)
+        stealth = easygui.integerbox("Enter cards stealth (1-25)", lowerbound=1, upperbound=25)
+        cunning = easygui.integerbox("Enter cards cunning (1-25)", lowerbound=1, upperbound=25)
         print(ID,name,strength,speed,stealth,cunning)
         Monster_cards[ID] = {
             "name": name,
@@ -45,5 +45,15 @@ if search == "search":
             easygui.msgbox(info, title=f"Details for {choice}")
 elif search == "close":
       ()
-
+deleteQ = easygui.ynbox ("Would you like to delete any cards?")
+if True:
+    delete = easygui.choicebox("select the card you want to delete",choices= list (Monster_cards.keys()))
+    if delete:
+        card_delete = Monster_cards[delete]
+        easygui.ynbox("Are you sure you want to delete this card?")
+        if True:
+            del Monster_cards[delete]
+        print (Monster_cards)
+else:
+      ()
 
