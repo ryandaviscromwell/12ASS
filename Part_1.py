@@ -13,6 +13,7 @@ Monster_cards = {
         "WIS": {"name": "Wispghoul", "strength": 17, "speed": 19, "stealth": 3, "cunning": 2},
         }
 
+test = easygui.buttonbox("select what you want to do", choices= ("Create new", "delete", "edit", "View cards"))
 def new_cards():
         ID = easygui.enterbox("Enter cards ID")
         name = easygui.enterbox("Enter cards name")
@@ -29,31 +30,45 @@ def new_cards():
             "cunning": cunning,
         }
         print(Monster_cards)
-    
-while True:
-    ask = easygui.ynbox ("would you like to create any new monster cards?")
-    if ask == True:
+if test == "Create new":   
+    while True:
+        ask = easygui.ynbox ("would you like to create any new monster cards?")
+        if ask == True:
             new_cards()
-    else:
-        break
-search = easygui.buttonbox("would you like to search for a monster card or create new card?", choices= ("close", "search"))
-if search == "search":
-        choice = easygui.choicebox("Select a card you wish to edit", choices= list (Monster_cards.keys()))
-        if choice:
-            card = Monster_cards[choice]
-            info = f"Name: {card['name']}\nStrength: {card['strength']}\nSpeed: {card['speed']}\nStealth: {card['stealth']}\nCunning: {card['cunning']}"
-            easygui.msgbox(info, title=f"Details for {choice}")
-elif search == "close":
-      ()
+        else:
+            break
+if test == "Edit":
+    search = easygui.buttonbox("would you like to search for a monster card to edit?", choices= ("search"))
+    if search == "search":
+            while True:
+                choice = easygui.choicebox("Select a card you wish to edit", choices= list (Monster_cards.keys()))
+                if choice:
+                    card = Monster_cards[choice]
+                    info = f"Name: {card['name']}\nStrength: {card['strength']}\nSpeed: {card['speed']}\nStealth: {card['stealth']}\nCunning: {card['cunning']}"
+                    easygui.msgbox(info, title=f"Details for {choice}")
+                    del Monster_cards[choice]
+                    new_cards()
+                    easygui.msgbox("Card has been updated")
+                    q = easygui.ynbox("Would you like to edit any other cards?")
+                    if q == True:
+                            ()
+                    else:
+                        break
+                
 deleteQ = easygui.ynbox ("Would you like to delete any cards?")
-if True:
-    delete = easygui.choicebox("select the card you want to delete",choices= list (Monster_cards.keys()))
-    if delete:
-        card_delete = Monster_cards[delete]
-        easygui.ynbox("Are you sure you want to delete this card?")
-        if True:
-            del Monster_cards[delete]
-        print (Monster_cards)
-else:
-      ()
-
+if deleteQ == True:
+    while True:
+        delete = easygui.choicebox("select the card you want to delete",choices= list (Monster_cards.keys()))
+        if delete:
+            card_delete = Monster_cards[delete]
+            easygui.ynbox("Are you sure you want to delete this card?")
+            if True:
+                del Monster_cards[delete]
+            dele = easygui.ynbox("Would you like to delete any other cards?")
+            if dele == True:
+                 ()
+            else:
+                 break
+if deleteQ == False:
+     ()
+     
