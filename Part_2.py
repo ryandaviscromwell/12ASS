@@ -1,5 +1,11 @@
 import easygui
 
+TITLE_NAME = "monster Cards"
+max = 25
+min = 1
+
+
+#This is my dictionary with all the preset cards
 Monster_cards = {
         "STO": {"name": "Stoneling","strength": 7,"speed": 1,"stealth": 25,"cunning": 15},
         "VEX": {"name": "Vexscream", "strength": 1, "speed": 6, "stealth": 21, "cunning": 19},
@@ -12,15 +18,18 @@ Monster_cards = {
         "FRO": {"name": "Froststep", "strength": 14, "speed": 14, "stealth": 17, "cunning": 4},
         "WIS": {"name": "Wispghoul", "strength": 17, "speed": 19, "stealth": 3, "cunning": 2},
         }
+#This loop makes it always go back to the button box menu
 while True:
-    test = easygui.buttonbox("select what you want to do", choices= ("Create New", "Delete", "Edit", "View Cards", "Close"))
+    #This is the main menu of the program which you will be sent to after your chosen actions.
+    test = easygui.buttonbox("Welcome to Monster cards creation program Select what you want to do", choices= ("Create New", "Delete", "Edit", "View Cards", "print", "Close"),title=(TITLE_NAME))
+    #This is how te user creates new cards
     def new_cards():
             ID = easygui.enterbox("Enter cards ID")
-            name = easygui.enterbox("Enter cards name")
-            strength = easygui.integerbox("Enter cards strength value (1-25)", lowerbound=1, upperbound=25)
-            speed = easygui.integerbox("Enter cards speed (1-25)", lowerbound=1, upperbound=25)
-            stealth = easygui.integerbox("Enter cards stealth (1-25)", lowerbound=1, upperbound=25)
-            cunning = easygui.integerbox("Enter cards cunning (1-25)", lowerbound=1, upperbound=25)
+            name = easygui.enterbox (str("Enter cards name"))
+            strength = easygui.integerbox("Enter cards strength value (1-25)", default= 10, lowerbound=(min), upperbound=(max))
+            speed = easygui.integerbox("Enter cards speed (1-25)", default= 10, lowerbound=(min), upperbound=(max))
+            stealth = easygui.integerbox("Enter cards stealth (1-25)", default= 10, lowerbound=(min), upperbound=(max))
+            cunning = easygui.integerbox("Enter cards cunning (1-25)", default= 10, lowerbound=(min), upperbound=(max))
             print(ID,name,strength,speed,stealth,cunning)
             Monster_cards[ID] = {
                 "name": name,
@@ -30,53 +39,78 @@ while True:
                 "cunning": cunning,
             }
             print(Monster_cards)
-    if test == "Create new":   
+    #Asks the user of they want to make cards
+    if test == "Create New":   
+        #Will keep asking user to make cards until user says no
         while True:
-            ask = easygui.ynbox ("would you like to create any new monster cards?")
+            ask = easygui.ynbox ("would you like to create any new monster cards?",title=(TITLE_NAME))
             if ask == True:
+                #Puts them through the process of making the cards
                 new_cards()
             else:
                 break
-                
+    #Asks user if they want to search to edit a card            
     if test == "Edit":
-        search = easygui.buttonbox("would you like to search for a monster card to edit?", choices= ("search", "back"))
+        search = easygui.buttonbox("would you like to search for a monster card to edit?", choices= ("search", "back"),title=(TITLE_NAME))
+        #Shows the user all the cards they can choose from to edit
         if search == "search":
                 while True:
-                    choice = easygui.choicebox("Select a card you wish to edit", choices= list (Monster_cards.keys()))
+                    name_to_key = {card["name"]: key for key, card in Monster_cards.items()}
+                    choice = easygui.choicebox("Select the card you want to edit",
+                           choices=list(name_to_key.keys()),title=(TITLE_NAME))
                     if choice:
-                        card = Monster_cards[choice]
+                        card_delete = name_to_key[choice]
+                        card = Monster_cards[card_delete]
                         info = f"Name: {card['name']}\nStrength: {card['strength']}\nSpeed: {card['speed']}\nStealth: {card['stealth']}\nCunning: {card['cunning']}"
-                        easygui.msgbox(info, title=f"Details for {choice}")
-                        del Monster_cards[choice]
+                        del Monster_cards[card_delete]
                         new_cards()
-                        easygui.msgbox("Card has been updated")
-                        q = easygui.ynbox("Would you like to edit any other cards?")
+
+                        easygui.msgbox("Card has been updated",title=(TITLE_NAME))
+                        q = easygui.ynbox("Would you like to edit any other cards?",title=(TITLE_NAME))
                         if q == True:
                                 ()
                         else:
                             break
+        #If the user presses back it takes them back to the main menu
         if search == "back":
             ()
-    if test == "delete":               
-        deleteQ = easygui.ynbox ("Would you like to delete any cards?")
+    #Asks user if they want to delete any cards
+    if test == "Delete": 
+        print("hi")             
+        deleteQ = easygui.ynbox ("Would you like to delete any cards?",title=(TITLE_NAME))
         if deleteQ == True:
+            #Shows all the cards they can delete
             while True:
-                delete = easygui.choicebox("select the card you want to delete",choices= list (Monster_cards.keys()))
-                if delete:
-                    card_delete = Monster_cards[delete]
-                    makeing_sure = easygui.ynbox("Are you sure you want to delete this card?")
-                    if makeing_sure == True:
-                        del Monster_cards[delete]
-                        break
-                    else:
-                        break
+                #Choose the card you want to delete
+                name_to_key = {card["name"]: key for key, card in Monster_cards.items()}
+                choice = easygui.choicebox("Select the card you want to delete",
+                           choices=list(name_to_key.keys()),title=(TITLE_NAME))
+                if choice:
+                    card_delete = name_to_key[choice]
+                    card = Monster_cards[card_delete]
+                    info = "Are you sure you want to delete this card?" f"\n\nName: {card['name']}\nStrength: {card['strength']}\nSpeed: {card['speed']}\nStealth: {card['stealth']}\nCunning: {card['cunning']}"
+                    easygui.msgbox(info, title=f"Details for {choice}")
+                    del Monster_cards[card_delete]
+                    break
+                else:
+                    break
+        #Takes you back to main menu
         if deleteQ == False:
            ()
-    if test == "View cards":
-        view = easygui.choicebox("select the card you want to view",choices= list (Monster_cards.keys()))
+    if test == "print":
+         print_cards = easygui.ynbox ("would you like to print the full monster card catalogue?",title=(TITLE_NAME))
+         if print_cards == True:
+            print(Monster_cards)
+            easygui.msgbox("Succsefully printed Monster cards",title=(TITLE_NAME))
+         else:
+             (test)
+    if test == "View Cards":
+        #Shows user ID's of all cards for the user to select and view
+        view = easygui.choicebox("select the card you want to view",choices= list (Monster_cards.keys()),title=(TITLE_NAME))
         if view:
             card = Monster_cards[view]
             info = f"Name: {card['name']}\nStrength: {card['strength']}\nSpeed: {card['speed']}\nStealth: {card['stealth']}\nCunning: {card['cunning']}"
             easygui.msgbox(info, title=f"Details for {view}")
-    if test == "close":
+    #Closes the program
+    if test == "Close":
         break
