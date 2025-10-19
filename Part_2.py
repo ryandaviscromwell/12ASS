@@ -136,17 +136,20 @@ def delete():
             card_delete = name_to_key[choice]
             card = Monster_cards[card_delete]
             # Shows the info card and asks if they still want to delete
-            info = (
-                "Are you sure you want to delete this card?" 
+            info = easygui.ynbox(
+                "Are you sure you want to delete this card?"
                 f"\n\nName: {card['name']}"
                 f"\nStrength: {card['strength']}"
                 f"\nSpeed: {card['speed']}"
                 f"\nStealth: {card['stealth']}"
                 f"\nCunning: {card['cunning']}"
             )
-            easygui.msgbox(info, title=f"Details for {choice}")
-            del Monster_cards[card_delete]
-            main()
+            if info is True:
+                del Monster_cards[card_delete]
+                easygui.msgbox("Card succsefully deleted")
+                main()
+            else:
+                main()
         # Takes you back to main menu
     if deleteq is False:
         main()
